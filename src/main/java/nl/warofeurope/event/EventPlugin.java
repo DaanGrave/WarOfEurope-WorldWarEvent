@@ -2,7 +2,6 @@ package nl.warofeurope.event;
 
 import co.aikar.commands.*;
 import nl.warofeurope.event.commands.EventCommand;
-import nl.warofeurope.event.commands.TellLocationCommand;
 import nl.warofeurope.event.listeners.ChatListener;
 import nl.warofeurope.event.listeners.DeathListener;
 import nl.warofeurope.event.listeners.JoinListener;
@@ -28,14 +27,15 @@ public class EventPlugin extends JavaPlugin {
         this.registerListeners(
                 new JoinListener(this),
                 new DeathListener(this),
-                new ChatListener(this)
+                new ChatListener()
         );
         this.registerCommands(
-                new EventCommand(this),
-                new TellLocationCommand(this)
+                new EventCommand(this)
         );
 
         this.game = new Game(this);
+
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "rg flag __global__ -w world pvp deny");
     }
 
     private void registerListeners(Listener... listeners){
@@ -71,18 +71,4 @@ public class EventPlugin extends JavaPlugin {
     public static EventPlugin getInstance(){
         return EventPlugin.getPlugin(EventPlugin.class);
     }
-
-    /**
-     * Als je joint kom je in je juiste land.
-     * Je wordt naar je land hok getpt.
-     * 1m vooraf komt er een countdown in de chat.
-     * bij start gaan alle iron bars weg en ontvangt iedereen kit 'event'
-     * in scoreboard zie je hoeveel mensen van welk land er nog zijn.
-     * mooie deathmessage
-     * /tl kunnen in eigen land chat
-     * prefix bij iedereen zijn hoofd + op tab + voor de naam.
-     * bij dood gaan in gm 3 komen. Mensen die te laat joinen of unk zijn komen ook gm 3.
-     * Als er nog 1 land over is wint dat land. Staat dan in de chat en als title, iedereen kan dan public GG zeggen.
-     * /newgame - alle landen worden naar hun land spawn gezet en gecleared + scoreboard refresh. bij /start begint alles weer opnieuw.
-     */
 }
