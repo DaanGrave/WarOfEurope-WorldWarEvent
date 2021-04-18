@@ -2,9 +2,8 @@ package nl.warofeurope.event;
 
 import co.aikar.commands.*;
 import nl.warofeurope.event.commands.EventCommand;
-import nl.warofeurope.event.listeners.ChatListener;
-import nl.warofeurope.event.listeners.DeathListener;
-import nl.warofeurope.event.listeners.JoinListener;
+import nl.warofeurope.event.commands.TellLocationCommand;
+import nl.warofeurope.event.listeners.*;
 import nl.warofeurope.event.models.Game;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -23,14 +22,18 @@ public class EventPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         this.scoreboardHandler = new ScoreboardHandler();
+        this.saveDefaultConfig();
 
         this.registerListeners(
                 new JoinListener(this),
                 new DeathListener(this),
-                new ChatListener()
+                new ChatListener(),
+                new DamageListener(),
+                new FoodChangeListener()
         );
         this.registerCommands(
-                new EventCommand(this)
+                new EventCommand(this),
+                new TellLocationCommand()
         );
 
         this.game = new Game(this);

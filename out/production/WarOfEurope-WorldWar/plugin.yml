@@ -1,0 +1,5 @@
+name: Event
+main: nl.warofeurope.event.EventPlugin
+version: 1.0
+author: FPDaan
+website: https://daan.gg

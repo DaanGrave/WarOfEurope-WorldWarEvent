@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.scoreboard.Scoreboard;
 
 import java.util.UUID;
 
@@ -22,14 +23,13 @@ public class DeathListener implements Listener {
     public void onDeath(PlayerDeathEvent event){
         Player entity = event.getEntity();
         entity.setGameMode(GameMode.SPECTATOR);
+        Scoreboard scoreboard = this.eventPlugin.scoreboardHandler.scoreboard;
+        scoreboard.getTeam("red").removeEntry(entity.getName());
+        scoreboard.getTeam("green").removeEntry(entity.getName());
 
         if (entity.getKiller() != null){
             event.setDeathMessage(color("&c" + entity.getName() + " &7is dood gegaan door &c" + entity.getKiller().getName() + "&7."));
 
-            Player killerPlayer = entity.getKiller();
-            UUID uniqueId = killerPlayer.getUniqueId();
-            this.eventPlugin.scoreboardHandler.playerKills.putIfAbsent(uniqueId, 0);
-            this.eventPlugin.scoreboardHandler.playerKills.replace(uniqueId, this.eventPlugin.scoreboardHandler.playerKills.getOrDefault(uniqueId, 1) + 1);
             this.eventPlugin.scoreboardHandler.updateScoreboard();
         } else {
             event.setDeathMessage(null);
